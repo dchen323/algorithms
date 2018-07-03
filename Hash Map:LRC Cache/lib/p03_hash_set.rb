@@ -1,4 +1,5 @@
 require_relative 'p02_hashing'
+require 'byebug'
 
 class HashSet
   attr_reader :count
@@ -9,12 +10,18 @@ class HashSet
   end
 
   def insert(key)
+    resize! if @count == num_buckets
+    @store[key.hash % num_buckets] << key
+    @count += 1
   end
 
   def include?(key)
+    @store[key.hash % num_buckets].include?(key)
   end
 
   def remove(key)
+    @store[key.hash % num_buckets].delete(key)
+    @count -= 1
   end
 
   private
@@ -28,5 +35,8 @@ class HashSet
   end
 
   def resize!
+    temp = @store
+    @store = Array.new(num_buckets * 2) {Array.new}
+    temp.each {|el| @store[el.hash % num_buckets] = el}
   end
 end
