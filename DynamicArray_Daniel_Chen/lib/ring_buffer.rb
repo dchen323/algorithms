@@ -30,7 +30,6 @@ class RingBuffer
     temp = @store[@end_idx % @capacity]
     @store[@end_idx % @capacity] = nil
     @length -= 1
-    # debugger
     temp
   end
 

@@ -1,4 +1,5 @@
 require 'queue_with_max'
+require 'byebug'
 
 describe QueueWithMax do
   it "enqueues" do
@@ -31,13 +32,13 @@ describe QueueWithMax do
   end
 
   it 'returns the correct max while dequeuing' do
-    q = QueueWithMax.new
-    arr = [1,3,4,10,9,3,2,17,5]
-    arr.each { |el| q.enqueue(el) }
+    qu = QueueWithMax.new
+    arr = [1,3,4,10,9,3,2,17,5,12,3]
+    arr.each { |el| qu.enqueue(el) }
     (1...arr.length).each do |i|
       max = arr[i..-1].max
-      q.dequeue
-      expect(q.max).to eq(max)
+      qu.dequeue
+      expect(qu.max).to eq(max)
     end
   end
 
