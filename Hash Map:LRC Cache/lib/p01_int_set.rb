@@ -1,19 +1,29 @@
+require 'byebug'
+
+
 class MaxIntSet
   def initialize(max)
+    @array = Array.new(max)
+    @max = max
   end
 
   def insert(num)
+    is_valid?(num)
+    @array[num] = num
   end
 
   def remove(num)
+    @array[num] = nil
   end
 
   def include?(num)
+    @array[num]
   end
 
   private
 
   def is_valid?(num)
+    raise "Out of bounds" if num < 0 || num > @max
   end
 
   def validate!(num)
@@ -27,12 +37,15 @@ class IntSet
   end
 
   def insert(num)
+    @store[num % num_buckets].push(num)
   end
 
   def remove(num)
+    @store[num % num_buckets].delete(num)
   end
 
   def include?(num)
+    @store[num % num_buckets].include?(num)
   end
 
   private
@@ -55,12 +68,20 @@ class ResizingIntSet
   end
 
   def insert(num)
+    if @count == num_buckets
+      resize!
+    end
+    @store[num % num_buckets].push(num)
+    @count += 1
   end
 
   def remove(num)
+    @store[num % num_buckets].delete(num)
+    @count -= 1
   end
 
   def include?(num)
+    @store[num % num_buckets].include?(num)
   end
 
   private
@@ -74,5 +95,13 @@ class ResizingIntSet
   end
 
   def resize!
+    temp = Array.new(num_buckets * 2){Array.new}
+    temp_size = num_buckets * 2
+    @store.each do |row|
+      row.each do |value|
+        temp[value % temp_size].push(value)
+      end
+    end
+    @store = temp
   end
 end
