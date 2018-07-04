@@ -17,6 +17,9 @@ class Node
   def remove
     # optional but useful, connects previous node to next node
     # and removes self from list.
+    self.prev.next = self.next
+    self.next.prev = self.prev
+
   end
 end
 
