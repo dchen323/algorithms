@@ -7,10 +7,10 @@ describe "#k_largest_elements" do
     result1 = arr1.sort.drop(6)
 
     arr2 = (0..1000).to_a.sample(400)
-    result2 = arr2.sort.drop(390)
+    result2 = arr2.sort.drop(375)
 
     expect(k_largest_elements(arr1, 4)).to match_array(result1)
-    expect(k_largest_elements(arr2, 10)).to match_array(result2)
+    expect(k_largest_elements(arr2, 25)).to match_array(result2)
   end
 
 end

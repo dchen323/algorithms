@@ -7,7 +7,7 @@ def k_largest_elements(array, k)
     BinaryMinHeap.heapify_up(array,idx,&prc)
   end
   idx = array.length - 1
-  while idx > 0
+  while idx > k
     array[0], array[idx] = array[idx], array[0]
     idx -= 1
     BinaryMinHeap.heapify_down(array,0,idx, &prc)
