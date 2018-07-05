@@ -13,7 +13,6 @@ class BinaryMinHeap
     @store[0], @store[-1] = @store[-1], @store[0]
     value = @store.pop
     self.class.heapify_down(@store,0)
-    debugger
     value
   end
 
