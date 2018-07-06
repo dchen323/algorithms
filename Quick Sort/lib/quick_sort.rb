@@ -1,3 +1,5 @@
+require 'byebug'
+
 class QuickSort
   # Quick sort has average case time complexity O(nlogn), but worst
   # case O(n**2).
@@ -21,8 +23,21 @@ class QuickSort
 
   # In-place.
   def self.sort2!(array, start = 0, length = array.length, &prc)
+    return if array.length < 2
+    pivot = self.partition(array,start,length)
   end
 
   def self.partition(array, start, length, &prc)
+    counter = start - 1
+    (start...array.length - 1).each do |idx|
+      if array[idx] < array[-1]
+        counter += 1
+        array[counter], array[idx] = array[idx], array[counter]
+      end
+    end
+    counter +=1
+    array[counter],array[-1] = array[-1], array[counter]
+
+    counter
   end
 end
