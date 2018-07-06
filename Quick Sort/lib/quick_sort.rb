@@ -23,20 +23,26 @@ class QuickSort
 
   # In-place.
   def self.sort2!(array, start = 0, length = array.length, &prc)
-    return if array.length < 2
-    pivot = self.partition(array,start,length)
+    if start < length
+      pivot = self.partition(array,start,length)
+      self.sort2!(array,start, pivot - 1)
+      debugger
+      self.sort2!(array,pivot + 1, length)
+    end
+    array
   end
 
   def self.partition(array, start, length, &prc)
-    counter = start - 1
-    (start...array.length - 1).each do |idx|
-      if array[idx] < array[-1]
+    counter = start
+    pivot = start
+    (start+1...start+length).each do |idx|
+      if array[idx] < array[pivot]
         counter += 1
         array[counter], array[idx] = array[idx], array[counter]
       end
     end
-    counter +=1
-    array[counter],array[-1] = array[-1], array[counter]
+    array[counter],array[pivot] = array[pivot], array[counter]
+
 
     counter
   end

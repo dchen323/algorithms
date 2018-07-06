@@ -1,4 +1,5 @@
 require "quick_sort"
+require 'byebug'
 
 describe QuickSort do
   describe "partition" do
@@ -8,7 +9,7 @@ describe QuickSort do
 
       expect(arr[0] && arr[1]).to be < arr[2]
       expect(arr[3] && arr[4]).to be > arr[2]
-      expect(pivot_idx).to eq(3)
+      expect(pivot_idx).to eq(2)
     end
 
     it "partitions a portion of the array" do
@@ -18,8 +19,8 @@ describe QuickSort do
       expect(arr[0...4]).to eq([4, 3, 2, 1])
 
       expect(arr[4] && arr[5]).to be < arr[6]
-      # expect(arr[7]).to be > arr[6]
-      expect(pivot_idx).to eq(5)
+      expect(arr[7]).to be > arr[6]
+      expect(pivot_idx).to eq(6)
     end
   end
 
