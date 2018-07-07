@@ -15,8 +15,10 @@ class BinarySearchTree
       node = traverse_tree(value)
       if value > node.value
         node.right = BSTNode.new(value)
+        node.right.parent = node
       elsif value < node.value
         node.left = BSTNode.new(value)
+        node.left.parent = node
       end
     end
   end
@@ -33,6 +35,12 @@ class BinarySearchTree
   end
 
   def delete(value)
+    node = find(value)
+    if node == root
+      @root = nil
+    elsif node
+      remove_node(node)
+    end
   end
 
   # helper method for #delete:
@@ -67,5 +75,39 @@ class BinarySearchTree
             end
     end
     start_node
+  end
+
+  def find_replacement_node(node)
+    until node.right == nil
+      node = node.right
+    end
+    node
+  end
+
+  def reset_children(node,deleted_node)
+    if node.left
+      remove_node(node)
+    end
+    node.right = deleted_node.right
+    deleted_node.right.parent = node
+  end
+
+  def remove_node(node)
+    if node.left && node.right
+      replacement_node = find_replacement_node(node.left)
+      reset_children(replacement_node,node)
+    elsif node.left || node.right
+      replacement_node = node.left ? node.left : node.right
+    else
+      replacement_node = nil
+    end
+    if replacement_node
+      replacement_node.parent = node.parent
+    end
+    if node.parent.value < node.value
+      node.parent.right = replacement_node
+    elsif node.parent.value > node.value
+      node.parent.left = replacement_node
+    end
   end
 end
