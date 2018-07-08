@@ -54,19 +54,14 @@ class BinarySearchTree
 
   def in_order_traversal(tree_node = @root, arr = [])
     return [tree_node.value] if !tree_node.left && !tree_node.right
-
-      if tree_node.left && tree_node.right
-        arr += in_order_traversal(tree_node.left,[])
-        arr.push(tree_node.value)
-        arr += in_order_traversal(tree_node.right,[])
-      elsif tree_node.left
-        arr += in_order_traversal(tree_node.left,[])
-        arr.push(tree_node.value)
-      elsif tree_node.right
-        arr.push(tree_node.value)
-        arr+= in_order_traversal(tree_node.right, [])
-      end
-      return arr
+    if tree_node.left
+      arr += in_order_traversal(tree_node.left,[])
+    end
+    arr.push(tree_node.value)
+    if tree_node.right
+      arr+= in_order_traversal(tree_node.right, [])
+    end
+    arr
   end
 
   attr_reader :root
