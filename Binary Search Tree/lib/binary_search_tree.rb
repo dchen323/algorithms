@@ -13,13 +13,7 @@ class BinarySearchTree
       set_root(value)
     else
       node = traverse_tree(value)
-      if value > node.value
-        node.right = BSTNode.new(value)
-        node.right.parent = node
-      elsif value < node.value
-        node.left = BSTNode.new(value)
-        node.left.parent = node
-      end
+      add_node(node,value)
     end
   end
 
@@ -45,12 +39,17 @@ class BinarySearchTree
 
   # helper method for #delete:
   def maximum(tree_node = @root)
+    find_replacement_node(tree_node)
   end
 
   def depth(tree_node = @root)
+    find_depth(tree_node)
   end
 
   def is_balanced?(tree_node = @root)
+    left_count = find_depth(tree_node.left)
+    right_count = find_depth(tree_node.right)
+    (left_count - right_count).abs < 1
   end
 
   def in_order_traversal(tree_node = @root, arr = [])
@@ -62,6 +61,30 @@ class BinarySearchTree
   # optional helper methods go here:
   def set_root(value)
     @root = BSTNode.new(value)
+  end
+
+  def add_node(node,value)
+    if value > node.value
+      node.right = BSTNode.new(value)
+      node.right.parent = node
+    elsif value < node.value
+      node.left = BSTNode.new(value)
+      node.left.parent = node
+    end
+  end
+
+  def find_depth(node,count = 0)
+    return count if !node.left && !node.right
+    count += 1
+    left_count = 0
+    right_count = 0
+    if node.left
+      left_count = find_depth(node.left, count)
+    end
+    if node.right
+      right_count = find_depth(node.right, count)
+    end
+    [left_count, right_count].max
   end
 
   def traverse_tree(value)
