@@ -32,6 +32,7 @@ def install_order(arr)
 
   until top.empty?
     current = top.shift
+    # debugger
     sorted << current.value unless sorted.include?(current.value)
     current.out_edges.each do |edge|
       edge.to_vertex.in_edges.delete(edge)
