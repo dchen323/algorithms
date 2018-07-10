@@ -25,4 +25,7 @@ class Edge
   end
 
   attr_reader :from_vertex, :to_vertex, :cost
+
+  private
+  attr_writer :from_vertex, :to_vertex, :cost
 end
