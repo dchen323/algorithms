@@ -16,7 +16,7 @@ def topological_sort(vertices)
     current = top.shift
     sorted << current
     current.out_edges.each do |edge|
-      edge.delete_vertex(current)
+      edge.to_vertex.in_edges.delete(edge)
       if edge.to_vertex.in_edges.empty?
         top.push(edge.to_vertex)
       end

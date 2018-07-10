@@ -24,13 +24,5 @@ class Edge
     @from_vertex = nil
   end
 
-  def delete_vertex(vertex)
-    self.to_vertex.in_edges.each do |edge|
-      if vertex == edge.from_vertex
-        self.to_vertex.in_edges.delete(edge)
-      end
-    end
-  end
-
   attr_reader :from_vertex, :to_vertex, :cost
 end
