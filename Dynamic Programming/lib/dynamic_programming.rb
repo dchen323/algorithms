@@ -4,6 +4,10 @@ class DynamicProgramming
 
   def initialize
     @cache = {}
+    @hash = {0 => [[]],
+            1 => [[1]],
+            2 => [[1,1],[2]]
+          }
   end
 
   def blair_nums(n)
@@ -18,26 +22,30 @@ class DynamicProgramming
   end
 
   def frog_cache_builder(n)
-    hash = {0 => [[]],
-            1 => [[1]],
-            2 => [[1,1],[2]]
-          }
-    return hash[n] if hash[n]
-    third = frog_cache_builder(n-1)
-    second = frog_cache_builder(n-2)
-    first = frog_cache_builder(n-3)
-    third.each do |perm|
-      perm.push(1)
-    end
-    second.each do |perm|
-      perm.push(2)
-    end
 
-    first.each do |perm|
-      perm.push(3)
+    return @hash[n] if @hash[n]
+
+    (3..n).each do |idx|
+      third = @hash[idx-1].map {|el| el + [1]}
+      second = @hash[idx-2].map {|el| el + [2]}
+      first = @hash[idx-3].map {|el| el + [3]}
+      @hash[idx] = first + second + third
     end
-    hash[n] = first + second + third
-    hash[n]
+    # third = frog_cache_builder(n-1)
+    # second = frog_cache_builder(n-2)
+    # first = frog_cache_builder(n-3)
+    # third = third.map do |perm|
+    #   perm + [1]
+    # end
+    # second = second.map do |perm|
+    #   perm + [2]
+    # end
+    #
+    # first = first.map do |perm|
+    #   perm +[3]
+    # end
+    # @hash[n] = first + second + third
+    @hash[n]
 
   end
 
@@ -46,29 +54,27 @@ class DynamicProgramming
   end
 
   def frog_hops_top_down_helper(n)
-    return [[]] if n == 0
-    return [[1]] if n == 1
-    return [[1,1], [2]] if n == 2
+    return @hash[n] if @hash[n]
     third = frog_hops_top_down_helper(n-1)
     second = frog_hops_top_down_helper(n-2)
     first = frog_hops_top_down_helper(n-3)
-    third.each do |perm|
-      perm.push(1)
+    third = third.map do |perm|
+      perm + [1]
     end
-    second.each do |perm|
-      perm.push(2)
-    end
-
-    first.each do |perm|
-      perm.push(3)
+    second = second.map do |perm|
+      perm + [2]
     end
 
-    first + second + third
+    first = first.map do |perm|
+      perm +[3]
+    end
+    @hash[n] = first + second + third
+    @hash[n]
 
   end
 
   def super_frog_hops(n, k)
-
+    return [[]] if n == 0
   end
 
   def knapsack(weights, values, capacity)
