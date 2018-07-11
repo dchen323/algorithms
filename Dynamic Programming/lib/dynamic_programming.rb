@@ -1,3 +1,5 @@
+require 'byebug'
+
 class DynamicProgramming
 
   def initialize
@@ -12,7 +14,23 @@ class DynamicProgramming
   end
 
   def frog_hops_bottom_up(n)
+    return [[]] if n == 0
+    return [[1]] if n == 1
+    return [[1,1],[2]] if n == 2
+    third = frog_hops_bottom_up(n-1)
+    second = frog_hops_bottom_up(n-2)
+    first = frog_hops_bottom_up(n-3)
+    third.each do |perm|
+      perm.push(1)
+    end
+    second.each do |perm|
+      perm.push(2)
+    end
 
+    first.each do |perm|
+      perm.push(3)
+    end
+    first + second + third
   end
 
   def frog_cache_builder(n)
