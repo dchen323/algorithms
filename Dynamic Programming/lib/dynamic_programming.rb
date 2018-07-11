@@ -14,12 +14,35 @@ class DynamicProgramming
   end
 
   def frog_hops_bottom_up(n)
-    return [[]] if n == 0
-    return [[1]] if n == 1
-    return [[1,1],[2]] if n == 2
-    third = frog_hops_bottom_up(n-1)
-    second = frog_hops_bottom_up(n-2)
-    first = frog_hops_bottom_up(n-3)
+    # return [[]] if n == 0
+    # return [[1]] if n == 1
+    # return [[1,1],[2]] if n == 2
+    # third = frog_hops_bottom_up(n-1)
+    # second = frog_hops_bottom_up(n-2)
+    # first = frog_hops_bottom_up(n-3)
+    # third.each do |perm|
+    #   perm.push(1)
+    # end
+    # second.each do |perm|
+    #   perm.push(2)
+    # end
+    #
+    # first.each do |perm|
+    #   perm.push(3)
+    # end
+    # first + second + third
+    frog_cache_builder(n)
+  end
+
+  def frog_cache_builder(n)
+    hash = {0 => [[]],
+            1 => [[1]],
+            2 => [[1,1],[2]]
+          }
+    return hash[n] if hash[n]
+    third = frog_cache_builder(n-1)
+    second = frog_cache_builder(n-2)
+    first = frog_cache_builder(n-3)
     third.each do |perm|
       perm.push(1)
     end
@@ -30,18 +53,17 @@ class DynamicProgramming
     first.each do |perm|
       perm.push(3)
     end
-    first + second + third
-  end
-
-  def frog_cache_builder(n)
+    hash[n] = first + second + third
+    hash[n]
 
   end
 
   def frog_hops_top_down(n)
-
+    frog_hops_top_down_helper(n)
   end
 
   def frog_hops_top_down_helper(n)
+    frog_cache_builder(n)
 
   end
 
