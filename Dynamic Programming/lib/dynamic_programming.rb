@@ -146,7 +146,10 @@ class DynamicProgramming
     result
   end
 
-  
+  def is_valid_pos?(maze, pos)
+    x,y = pos
+    x >= 0 && y >= 0 && x < maze.length && y < maze.first.length && maze[x][y] != "X"
+  end
 
   def build_cache(start_pos)
     @maze_cache[start_pos] = nil
