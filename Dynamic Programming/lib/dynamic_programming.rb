@@ -9,6 +9,7 @@ class DynamicProgramming
             2 => [[1,1],[2]]
           }
     @hash2 = {0 => [[]]}
+    @knap = {}
 
   end
 
@@ -77,32 +78,30 @@ class DynamicProgramming
     end
     @hash2[n] = result
     @hash2[n]
-    # unless hash[k]
-    #   (1..k).each do |idx|
-    #     perms = []
-    #     idx.downto(1).each do |steps|
-    #       perms += hash[idx-steps].map do |el|
-    #         el + [steps]
-    #       end
-    #     end
-    #     hash[idx] = perms
-    #     return hash[n] if hash[n]
-    #   end
-    # end
-    #
-    # (1..(n-k)).each do |steps|
-    #   perms = []
-    #   hash[k + steps - 1].map do |el|
-    #     perms += el + [steps]
-    #     perms += [steps] + el
-    #   end
-    #   hash[k + steps] = perms
-    # end
-    # hash[n]
   end
 
   def knapsack(weights, values, capacity)
-
+    return 0 if capacity == 0
+    (0..capacity).each do |cap|
+      soln = []
+      (0...values.length).each do |idx|
+        if weights[idx] <= cap
+          total = values[idx]
+          if idx > 0
+            temp = values[idx] + @knap[cap - weights[idx]][idx - 1]
+            total = total > temp ? total : temp
+            final = total > soln[idx - 1] ? total : soln[idx - 1]
+            soln[idx] = final > values[idx] ? final : values[idx]
+          else
+            soln[idx] = total > values[idx] ? total : values[idx]
+          end
+        elsif weights[idx] > cap
+          soln[idx] = idx == 0 ? 0 : soln[idx - 1]
+        end
+      end
+      @knap[cap] = soln
+    end
+    @knap[capacity].max
   end
 
   # Helper method for bottom-up implementation
