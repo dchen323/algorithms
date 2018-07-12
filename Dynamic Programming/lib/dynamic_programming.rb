@@ -8,6 +8,8 @@ class DynamicProgramming
             1 => [[1]],
             2 => [[1,1],[2]]
           }
+    @hash2 = {0 => [[]]}
+
   end
 
   def blair_nums(n)
@@ -31,20 +33,6 @@ class DynamicProgramming
       first = @hash[idx-3].map {|el| el + [3]}
       @hash[idx] = first + second + third
     end
-    # third = frog_cache_builder(n-1)
-    # second = frog_cache_builder(n-2)
-    # first = frog_cache_builder(n-3)
-    # third = third.map do |perm|
-    #   perm + [1]
-    # end
-    # second = second.map do |perm|
-    #   perm + [2]
-    # end
-    #
-    # first = first.map do |perm|
-    #   perm +[3]
-    # end
-    # @hash[n] = first + second + third
     @hash[n]
 
   end
@@ -73,8 +61,44 @@ class DynamicProgramming
 
   end
 
+  def reset_cache
+    @hash2 = {0 => [[]]}
+  end
+
   def super_frog_hops(n, k)
-    return [[]] if n == 0
+    reset_cache #add to pass specs
+    return @hash2[n] unless @hash2[n].nil?
+    idx = 1
+    result = []
+    while idx <= k
+      k = n if n < k
+      result += super_frog_hops(n-idx, k).map {|sub| sub + [idx]}
+      idx += 1
+    end
+    @hash2[n] = result
+    @hash2[n]
+    # unless hash[k]
+    #   (1..k).each do |idx|
+    #     perms = []
+    #     idx.downto(1).each do |steps|
+    #       perms += hash[idx-steps].map do |el|
+    #         el + [steps]
+    #       end
+    #     end
+    #     hash[idx] = perms
+    #     return hash[n] if hash[n]
+    #   end
+    # end
+    #
+    # (1..(n-k)).each do |steps|
+    #   perms = []
+    #   hash[k + steps - 1].map do |el|
+    #     perms += el + [steps]
+    #     perms += [steps] + el
+    #   end
+    #   hash[k + steps] = perms
+    # end
+    # hash[n]
   end
 
   def knapsack(weights, values, capacity)
